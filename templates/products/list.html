@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List - Products</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Photo</th>
+                <th>Price</th>
+                <th>Category_id</th>
+                <th>Seller_id</th>
+                <th>Created</th>
+                <th>Updated</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result['id'] }}</td>
+                <td>{{ result['title'] }}</td>
+                <td>{{ result['description'] }}</td>
+                <td>{{ result['photo'] }}</td>
+                <td>{{ result['price'] }}</td>
+                <td>{{ result['category_id'] }}</td>
+                <td>{{ result['seller_id'] }}</td>
+                <td>{{ result['created'] }}</td>
+                <td>{{ result['updated'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p><a class="link" href="/">Home</a></p>
+</body>
+</html>

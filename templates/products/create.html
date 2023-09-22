@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create - Products</title>
+</head>
+<body>
+    <div>
+        <form id="create" method="POST" action="/products/create">
+            <div>
+                <div class="formulario">
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" required/>
+                    <label for="description">Description</label>
+                    <input type="text" id="description" name="description" required/>
+                    <label for="photo">Photo</label>
+                    <input type="file" id="photo" name="photo" required/>
+                    <label for="price">Price</label>
+                    <input type="number" id="price" name="price" required/>
+                    <label for="category_id">Category_id</label>
+                    <select name="category_id" id="category_id">
+                        <option value="">--Please choose an option--</option>
+                        {% for result in results %}
+                        <option value="{{ result['id'] }}">{{ result['name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div>
+        <div class="opciones">
+            <input form="create" type="submit" value="Crear"/>
+            <input form="create" type="reset" value="Esborrar"/>
+            <a href="/">Tornar</a>
+        </div>
+    </div>
+</body>
+</html>
