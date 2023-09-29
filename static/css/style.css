@@ -1,4 +1,4 @@
-.link {
+/* .link {
     color: black;
     text-decoration: none;
 }
@@ -13,4 +13,99 @@ thead {
 tbody, th, td{
     background: white;
     color: black;
+} */
+
+/* Resetear estilos por defecto del navegador */
+body, h1, a, img, p, ul, li {
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para el cuerpo (body) */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Estilos para el encabezado (h1) */
+header {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    font-size: 28px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos para los enlaces (a) */
+a {
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+/* Cambiar color de enlace al pasar el cursor sobre él */
+a:hover {
+    color: #0056b3;
+}
+
+/* Estilos para la sección de introducción (intro) */
+.intro {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    margin: 20px auto;
+    max-width: 500px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el párrafo (p) dentro de la sección de introducción */
+.intro p {
+    margin-bottom: 20px;
+}
+
+/* Estilos para la imagen (image) */
+.image img {
+    max-width: 100%;
+    height: auto;
+    border: 5px solid #007BFF;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para el pie de página (footer) */
+footer {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+/* Estilos para la lista no ordenada (ul) */
+ul {
+    list-style-type: none;
+}
+
+/* Estilos para los elementos de la lista (li) */
+li {
+    margin-bottom: 10px;
+}
+
+/* Estilos para los enlaces (a) dentro de la lista de acciones */
+ul li a.link {
+    color: #fff;
+    text-decoration: none;
+    background-color: #0056b3;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+/* Cambiar color de fondo del enlace al pasar el cursor sobre él */
+ul li a.link:hover {
+    background-color: #007BFF;
 }
