@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear - Productos</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/create.css')}}">
+</head>
+<body>
+    <header>
+        <h1>Crear Nuevo Producto</h1>
+    </header>
+    <main>
+        <section class="product-form">
+            <form id="create" method="POST" action="/products/create">
+                <div class="form-group">
+                    <label for="title">Título:</label>
+                    <input type="text" id="title" name="title" required/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <input type="text" id="description" name="description" required/>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Foto:</label>
+                    <input type="file" id="photo" name="photo" required/>
+                </div>
+                <div class="form-group">
+                    <label for="price">Precio:</label>
+                    <input type="number" id="price" name="price" required/>
+                </div>
+                <div class="form-group">
+                    <label for="category_id">Categoría:</label>
+                    <select name="category_id" id="category_id">
+                        <option value="">--Por favor, elige una opción--</option>
+                        {% for result in results %}
+                        <option value="{{ result['id'] }}">{{ result['name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="options">
+                    <input form="create" type="submit" value="Crear" class="button-create"/>
+                    <input form="create" type="reset" value="Limpiar" class="button-clear"/>
+                    <a class="link" href="/">Volver</a>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

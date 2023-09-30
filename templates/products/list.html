@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista - Productos</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/list.css')}}">
+</head>
+<body>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Foto</th>
+                <th>Precio</th>
+                <th>ID de Categoría</th>
+                <th>ID de Vendedor</th>
+                <th>Creado</th>
+                <th>Actualizado</th>
+                <th colspan="3">Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for result in results %}
+            <tr>
+                <td>{{ result['id'] }}</td>
+                <td>{{ result['title'] }}</td>
+                <td>{{ result['description'] }}</td>
+                <td>{{ result['photo'] }}</td>
+                <td>{{ result['price'] }}</td>
+                <td>{{ result['category_id'] }}</td>
+                <td>{{ result['seller_id'] }}</td>
+                <td>{{ result['created'] }}</td>
+                <td>{{ result['updated'] }}</td>
+                <td><a href="/products/read/{{ result['id'] }}" title="Ver">Ver</a></td>
+                <td><a href="/products/update/{{ result['id'] }}" title="Editar">Editar</a></td>
+                <td><a href="/products/delete/{{ result['id'] }}" title="Eliminar">Eliminar</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="link" href="/">Inicio</a>
+    <a class="link" href="/products/create">Crear Producto</a>
+</body>
+</html>

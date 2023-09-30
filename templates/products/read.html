@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles - Productos</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/read.css')}}">
+</head>
+<body>
+    <header>
+        <h1>Detalles del Producto</h1>
+    </header>
+    <main>
+        {% for row in results %}
+        <section class="product-details">
+            <form id="read" class="product-form">
+                <div class="form-group">
+                    <label for="title">Título:</label>
+                    <input type="text" value="{{ row.title }}" id="title" name="title" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <input type="text" value="{{ row.description }}" id="description" name="description" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Foto:</label>
+                    <img src="{{ row.photo }}" id="photo" alt="Product Photo"/>
+                </div>
+                <div class="form-group">
+                    <label for="price">Precio:</label>
+                    <input type="number" value="{{ row.price }}" id="price" name="price" readonly/>
+                </div>
+                <div class="form-group">
+                    <label for="category">Categoría:</label>
+                    <select name="category" id="category" disabled>
+                        {% for cat in categories %}
+                        {% if cat['id'] == row.category_id %}
+                            <option value="{{ cat['id'] }}">{{ cat['name'] }}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+            <div class="options">
+                <a class="link" href="/products/update/{{ row.id }}">Editar</a>
+                <a class="button-delete" href="/products/delete/{{ row.id }}" title="Eliminar">Eliminar</a>
+                <a class="link" href="/products/list">Volver</a>
+            </div>
+        </section>
+        {% endfor %}
+    </main>
+</body>
+</html>

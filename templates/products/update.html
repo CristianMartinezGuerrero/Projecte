@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar - Producto</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/update.css')}}">
+</head>
+<body>
+    <header>
+        <h1>Editar Producto</h1>
+    </header>
+    <main>
+        {% for row in results %}
+        <section class="product-details">
+            <form id="update" class="product-form" method="POST" action="/products/update/{{ row.id }}">
+                <div class="form-group">
+                    <label for="title">Título:</label>
+                    <input type="text" value="{{ row.title }}" id="title" name="title" required/>
+                </div>
+                <div class="form-group">
+                    <label for="description">Descripción:</label>
+                    <input type="text" value="{{ row.description }}" id="description" name="description" required/>
+                </div>
+                <div class="form-group">
+                    <label for="photo">Foto:</label>
+                    <input type="file" value="{{ row.photo }}" id="photo" name="photo" required/>
+                </div>
+                <div class="form-group">
+                    <label for="price">Precio:</label>
+                    <input type="number" value="{{ row.price }}" id="price" name="price" required/>
+                </div>
+                <div class="form-group">
+                    <label for="category_id">Categoría:</label>
+                    <select name="category_id" id="category_id">
+                        {% for cat in categories %}
+                        <option value="{{ cat['id'] }}" {% if cat['id'] == row.category_id %}selected{% endif %}>{{ cat['name'] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <!-- <div class="options">
+                    <input form="update" type="submit" value="Update" class="button-update"/>
+                    <input form="update" type="reset" value="Limpiar" class="button-clear"/>
+                    <a class="link" href="/products/list">Volver</a>
+                </div> -->
+                <div class="options">
+                    <input form="update" type="submit" class="button-update" value="Actualizar"/>
+                    <!-- <input form="update" type="reset" class="button-clear" value="Eliminar" /> -->
+                    <a class="button-delete" href="/products/delete/{{ row.id }}" title="Eliminar">Eliminar</a>
+                    <a class="link" href="/products/list">Volver</a>
+                </div>
+            </form>
+        </section>
+        {% endfor %}
+    </main>
+</body>
+</html>
