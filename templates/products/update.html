@@ -38,17 +38,11 @@
                         {% endfor %}
                     </select>
                 </div>
-                <!-- <div class="options">
-                    <input form="update" type="submit" value="Update" class="button-update"/>
-                    <input form="update" type="reset" value="Limpiar" class="button-clear"/>
-                    <a class="link" href="/products/list">Volver</a>
-                </div> -->
                 <div class="options">
                     <input form="update" type="submit" class="button-update" value="Actualizar"/>
-                    <!-- <input form="update" type="reset" class="button-clear" value="Eliminar" /> -->
-                    <a class="button-delete" href="/products/delete/{{ row.id }}" title="Eliminar">Eliminar</a>
-                    <a class="link" href="/products/list">Volver</a>
-                </div>
+                    <a class="button-delete" href="{{ url_for('products_delete', id=row.id) }}">Eliminar</a>
+                    <a class="link" href="{{url_for('products_list')}}">Volver</a>
+                </div>  
             </form>
         </section>
         {% endfor %}

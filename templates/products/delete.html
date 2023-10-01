@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete - Products</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/delete.css')}}">
+    <title>Eliminar - Productos</title>
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='css/delete.css')}}"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
     <header>
-        <h1>Delete Product</h1>
+        <h1>Eliminar Productos</h1>
     </header>
     <main>
         {% for row in results %}
@@ -16,19 +17,19 @@
             <div class="product-info">
                 <h2>{{ row.title }}</h2>
                 <p>{{ row.description }}</p>
-                <p>Price: ${{ row.price }}</p>
+                <p>Precio: ${{ row.price }}</p>
                 {% for cat in categories %}
                 {% if cat['id'] == row.category_id %}
-                    <p>Category: {{ cat['name'] }}</p>
+                    <p>Categoría: {{ cat['name'] }}</p>
                 {% endif %}
                 {% endfor %}
             </div>
             <div class="product-actions">
                 <form id="delete" method="POST" action="/products/delete/{{ row.id }}">
-                    <input form="delete" type="submit" value="Delete"/>
+                    <input form="delete" type="submit" value="Eliminar"/>
                 </form>
-                <a class="link" href="/products/update/{{ row.id }}">Edit</a>
-                <a class="link" href="/products/list">Back</a>
+                <a class="link" href="{{ url_for('products_update', id=row.id) }}">Editar</a>
+                <a class="link" href="{{url_for('products_list')}}">Volver</a>
             </div>
         </section>
         {% endfor %}

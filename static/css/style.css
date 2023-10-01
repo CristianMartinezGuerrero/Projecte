@@ -1,167 +1,116 @@
-/* Resetear estilos por defecto del navegador */
-body, h1, a, table, th, td {
+/* * {
     margin: 0;
     padding: 0;
-    border: 0;
+    box-sizing: border-box;
 }
 
-/* Estilos para el cuerpo (body) */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: purple;
     text-align: center;
     padding: 20px;
 }
 
-/* Estilos para el encabezado (h1) */
-h1 {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    /* font-size: 20px; */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-    border: 1px solid #0056b3;
-}
-
-/* Estilos para los enlaces (a) */
 a {
-    color: #007BFF;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-/* Cambiar color de enlace al pasar el cursor sobre él */
-a:hover {
-    color: #0056b3;
-}
-
-/* Estilos para la tabla */
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    border: 1px solid #ccc;
-}
-
-/* Estilos para las celdas del encabezado (th) */
-th {
-    background-color: #333;
-    color: #fff;
-    padding: 10px;
-    border: 1px solid #444;
-}
-
-/* Estilos para las celdas de datos (td) */
-td {
-    background-color: #f9f9f9;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-/* Estilos para las filas impares de la tabla */
-tr:nth-child(odd) {
-    background-color: #e5e5e5;
-}
-
-/* Estilos para los enlaces dentro de la tabla */
-.table a {
-    color: #007BFF;
     text-decoration: none;
 }
 
-/* Cambiar color de enlace al pasar el cursor sobre él en la tabla */
-.table a:hover {
-    color: #0056b3;
-}
-
-/* Estilos para los enlaces con la clase "link" */
 a.link {
     display: inline-block;
-    margin-top: 20px;
+    color: purple;
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
     border-radius: 5px;
-    transition: background-color 0.3s;
-    border: 1px solid #0056b3;
+    border: 1px solid purple;
 }
 
-/* Cambiar color de fondo del enlace al pasar el cursor sobre él */
 a.link:hover {
-    background-color: #0056b3;
-    border: 1px solid #003f80;
+    color: black;
+    background-color: purple;
+    border: 1px solid purple;
 }
 
-/* Estilos para el header */
-header {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
+.container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
 }
 
-/* Estilos para el título principal en el header */
-header h1 {
-    /* font-size: 18px; */
-    margin-bottom: 5px;
-}
-
-/* Estilos para los enlaces en el header */
-header a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease;
-}
-
-/* Cambiar color del enlace al pasar el cursor sobre él en el header */
-header a:hover {
-    color: #0056b3;
-}
-
-/* Estilos para la sección de la imagen principal */
-.main .image img {
+.container img {
     max-width: 100%;
     height: auto;
-    display: block;
-    margin: 0 auto;
-    border-radius: 5px;
-    border: 1px solid #ddd;
 }
 
-/* Estilos para el footer */
 footer {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 5px;
+    background-color: black;
+    padding: 20px;
     border-radius: 5px;
+    position: fixed;
+    bottom: 0;
+    width: 98%;
 }
 
-/* Estilos para el subtítulo en el footer */
-footer h2 {
-    font-size: 16px;
-    margin-bottom: 5px;
-}
-
-/* Estilos para la lista no ordenada en el footer */
 footer ul {
     list-style-type: none;
-    padding: 0;
+    display: flex;
+    justify-content: center;
 }
 
-/* Estilos para los elementos de la lista en el footer */
 footer li {
+    margin-right: 20px;
+} */
+
+/* Agrega estos estilos al archivo style.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: purple;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    color: white;
+    background-color: black;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.container {
+    margin: 20px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+.error-messages {
+    list-style-type: none;
+    font-size: 1.5em;
+    margin-top: 20px;
+}
+
+.error-messages li {
+    padding: 5px 10px;
+    border-radius: 5px;
     margin-bottom: 5px;
 }
 
-/* Estilos para los enlaces en el footer */
-.footer a {
+.link {
+    font-size: 17.5px;
+    padding: 10px 20px;
     text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease;
+    background-color: black;
+    color: purple;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    cursor: pointer;
 }
 
-/* Cambiar color del enlace al pasar el cursor sobre él en el footer */
-.footer a:hover {
-    color: #0056b3;
+.link:hover {
+    background-color: purple;
+    color: black;
 }

@@ -12,14 +12,14 @@
     </header>
     <main>
         <section class="product-form">
-            <form id="create" method="POST" action="/products/create">
+            <form id="create" method="POST" action="/products/create" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="title">Título:</label>
                     <input type="text" id="title" name="title" required/>
                 </div>
                 <div class="form-group">
                     <label for="description">Descripción:</label>
-                    <input type="text" id="description" name="description" required/>
+                    <input type="text" id="description" name="description"/>
                 </div>
                 <div class="form-group">
                     <label for="photo">Foto:</label>
@@ -41,7 +41,7 @@
                 <div class="options">
                     <input form="create" type="submit" value="Crear" class="button-create"/>
                     <input form="create" type="reset" value="Limpiar" class="button-clear"/>
-                    <a class="link" href="/">Volver</a>
+                    <a class="link" href="{{url_for('products_list')}}">Volver</a>
                 </div>
             </form>
         </section>

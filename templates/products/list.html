@@ -34,14 +34,23 @@
                 <td>{{ result['seller_id'] }}</td>
                 <td>{{ result['created'] }}</td>
                 <td>{{ result['updated'] }}</td>
-                <td><a href="/products/read/{{ result['id'] }}" title="Ver">Ver</a></td>
-                <td><a href="/products/update/{{ result['id'] }}" title="Editar">Editar</a></td>
-                <td><a href="/products/delete/{{ result['id'] }}" title="Eliminar">Eliminar</a></td>
+                <td><a href="{{ url_for('products_read', id=result['id']) }}" title="Ver">Ver</a></td>
+                <td><a href="{{ url_for('products_update', id=result['id']) }}" title="Editar">Editar</a></td>
+                <td><a href="{{ url_for('products_delete', id=result['id']) }}" title="Eliminar">Eliminar</a></td>      
             </tr>
             {% endfor %}
         </tbody>
     </table>
     <a class="link" href="/">Inicio</a>
-    <a class="link" href="/products/create">Crear Producto</a>
+    <a class="link" href="{{url_for('products_create')}}">Crear Producto</a>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 </body>
 </html>

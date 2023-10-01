@@ -24,7 +24,7 @@
                 </div>
                 <div class="form-group">
                     <label for="photo">Foto:</label>
-                    <img src="{{ row.photo }}" id="photo" alt="Product Photo"/>
+                    <img src="{{ row.photo }}" id="photo"/>
                 </div>
                 <div class="form-group">
                     <label for="price">Precio:</label>
@@ -42,9 +42,9 @@
                 </div>
             </form>
             <div class="options">
-                <a class="link" href="/products/update/{{ row.id }}">Editar</a>
-                <a class="button-delete" href="/products/delete/{{ row.id }}" title="Eliminar">Eliminar</a>
-                <a class="link" href="/products/list">Volver</a>
+                <a class="link" href="{{ url_for('products_update', id=row.id) }}">Editar</a>
+                <a class="button-delete" href="{{ url_for('products_delete', id=row.id) }}">Eliminar</a>
+                <a class="link" href="{{url_for('products_list')}}">Volver</a>
             </div>
         </section>
         {% endfor %}

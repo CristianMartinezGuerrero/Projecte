@@ -1,117 +1,72 @@
-/* Resetear estilos por defecto del navegador */
-body, h1, p, a, form, input, select, img {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* Estilos para el cuerpo (body) */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: purple;
     text-align: center;
     padding: 20px;
 }
 
-/* Estilos para el encabezado (h1) */
-header {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    font-size: 28px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Estilos para el contenedor de detalles del producto (product-details) */
-.product-details {
-    max-width: 500px;
-    margin: 20px auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    text-align: left;
-}
-
-/* Estilos para los grupos de formulario (form-group) */
-.form-group {
-    margin-bottom: 20px;
-}
-
-/* Estilos para las etiquetas (label) */
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-}
-
-/* Estilos para los campos de entrada (input) y selección (select) */
-.form-group input[type="text"],
-.form-group input[type="number"],
-.form-group input[type="file"],
-.form-group input[type="text"] {
-    width: 100%;
+h1 {
+    color: white;
+    background-color: black;
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-}
-
-/* Estilos para la imagen del producto */
-.form-group img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin-top: 10px;
-}
-
-/* Estilos para los enlaces (a) */
-a.link {
-    color: #007BFF;
-    text-decoration: none;
-    padding: 10px 20px;
     border-radius: 5px;
-    font-size: 18px;
-    margin-right: 10px;
 }
 
-/* Cambiar color de enlace al pasar el cursor sobre él */
-a.link:hover {
-    color: #0056b3;
+.product-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px black;
 }
 
-/* Estilos para las opciones (options) */
+.form-group {
+    margin-bottom: 10px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 1.3em;
+    padding: 10px;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+input[type="file"] {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
 .options {
+    text-align: center;
     margin-top: 20px;
 }
 
-/* Estilos para el campo de categoría */
-.form-group select#category {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-size: 16px;
-    background-color: #f8f8f8; /* Color de fondo para campos de solo lectura */
-    color: #333; /* Color de texto para campos de solo lectura */
-}
-
-/* ... Otros estilos ... */
-
-/* Estilos para el botón "Delete" */
-.button-delete {
-    background-color: #dc3545; /* Color rojo */
-    color: #fff; /* Color de texto blanco */
+.link,
+.button-create,
+.button-clear {
+    font-size: 17px;
     padding: 10px 20px;
+    background-color: black;
+    color: purple;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
     margin-right: 10px;
-    text-decoration: none;
+    cursor: pointer;
 }
 
-/* Cambiar color de fondo del botón "Delete" al pasar el cursor sobre él */
-.button-delete:hover {
-    background-color: #c82333; /* Color rojo más oscuro */
+.link:hover,
+.button-create:hover,
+.button-clear:hover {
+    background-color: purple;
+    color: black;
 }

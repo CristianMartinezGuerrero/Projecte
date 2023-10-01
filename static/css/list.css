@@ -1,88 +1,68 @@
-/* Resetear estilos por defecto del navegador */
-body, h1, a, table, th, td {
+* {
     margin: 0;
     padding: 0;
-    border: 0;
+    box-sizing: border-box;
 }
 
-/* Estilos para el cuerpo (body) */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: purple;
     text-align: center;
     padding: 20px;
 }
 
-/* Estilos para el encabezado (h1) */
-h1 {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    font-size: 24px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-/* Estilos para los enlaces (a) */
-a {
-    color: #007BFF;
-    text-decoration: none;
-    transition: color 0.3s;
-}
-
-/* Cambiar color de enlace al pasar el cursor sobre él */
-a:hover {
-    color: #0056b3;
-}
-
-/* Estilos para la tabla */
-.table {
+table.table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-/* Estilos para las celdas del encabezado (th) */
-th {
-    background-color: #333;
-    color: #fff;
+table.table th {
+    background-color: black;
+    color: purple;
     padding: 10px;
 }
 
-/* Estilos para las celdas de datos (td) */
-td {
-    background-color: #f9f9f9;
+table.table td {
+    background-color: white;
+    background-color: gray;
     padding: 10px;
+    border: 1px solid black;
 }
 
-/* Estilos para las filas impares de la tabla */
-tr:nth-child(odd) {
-    background-color: #e5e5e5;
+table.table tr:nth-child(odd) {
+    background-color: gray; /* Color de fondo gris claro */
 }
 
-/* Estilos para los enlaces dentro de la tabla */
-.table a {
-    color: #007BFF;
+table.table a {
+    color: purple;
     text-decoration: none;
 }
 
-/* Cambiar color de enlace al pasar el cursor sobre él en la tabla */
-.table a:hover {
-    color: #0056b3;
-}
-
-/* Estilos para los enlaces con la clase "link" */
 a.link {
     display: inline-block;
+    text-decoration: none;
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
+    background-color: black;
+    color: purple;
     border-radius: 5px;
-    transition: background-color 0.3s;
 }
 
-/* Cambiar color de fondo del enlace al pasar el cursor sobre él */
 a.link:hover {
-    background-color: #0056b3;
+    background-color: purple;
+    color: black;
+    border: 1px solid black;
+}
+
+.messages {
+    list-style-type: none;
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+.messages li {
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-bottom: 5px;
 }
