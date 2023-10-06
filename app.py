@@ -1,142 +1,172 @@
-from flask import Flask, render_template, request, redirect, url_for, abort, g, flash
-import sqlite3, datetime, os
+from flask import Flask, render_template, redirect, url_for, request
+from flask_sqlalchemy import SQLAlchemy
+import os
+from datetime import datetime
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
-DATABASE = 'database.db'
-app.secret_key = 'xxx'
-app.config['UPLOAD_FOLDER'] = 'uploads'
 
-def get_db():
-    db = getattr(g, '_database', None)
-    if db is None:
-        db = g._database = sqlite3.connect(DATABASE)
-        db.row_factory = sqlite3.Row
-    return db
 
-@app.teardown_appcontext
-def close_connection(exception):
-    db = getattr(g, '_database', None)
-    if db is not None:
-        db.close()
+UPLOAD_FOLDER = "./uploads"
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-def query_db(query, args=(), one=False):
-    cur = get_db().execute(query, args)
-    rv = cur.fetchall()
-    cur.close()
-    return (rv[0] if rv else None) if one else rv
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = "xxx"
 
-def obtenir_categories():
-    categories = []
-    myresult = query_db("SELECT * FROM categories")
-    for x in myresult:
-        categories.append(x)
-    return categories
+def allowed_file(photoname):
+    return '.' in photoname and photoname.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def obtenir_producte_id(id):
-    myresult = query_db("SELECT * FROM products WHERE id = ?", (id,))
-    return myresult
+# ruta absoluta d'aquesta carpeta
+basedir = os.path.abspath(os.path.dirname(__file__)) 
 
-@app.route("/")
-def hello_world():
-    return render_template('HelloWorld.html')
+# paràmetre que farà servir SQLAlchemy per a connectar-se
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + basedir + "/database.db"
+# mostre als logs les ordres SQL que s'executen
+app.config["SQLALCHEMY_ECHO"] = True
+
+# Inicio SQLAlchemy
+db = SQLAlchemy()
+db.init_app(app)
+
+# Taula categories
+class categories(db.Model):
+    __tablename__ = "categories"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    slug = db.Column(db.String(255), unique=True, nullable=False)
+
+# Taula users
+class users(db.Model):
+    __tablename__ = "users"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(255), unique=True, nullable=False)
+    email = db.Column(db.String(255), unique=True, nullable=False)
+    password = db.Column(db.String(255), nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+# Taula products
+class products(db.Model):
+    __tablename__ = "products"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    title = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    photo = db.Column(db.String(255), nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
+    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"), nullable=False)
+    seller_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    updated = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+# Taula orders
+class orders(db.Model):
+    __tablename__ = "orders"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    product_id = db.Column(db.Integer, db.ForeignKey("products.id"), nullable=False)
+    buyer_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+    __table_args__ = (
+        db.UniqueConstraint('product_id', 'buyer_id', name='uc_product_buyer'),
+    )
+
+# Taula confirmed_orders
+class confirmed_orders(db.Model):
+    __tablename__ = "confirmed_orders"
+    order_id = db.Column(db.Integer, db.ForeignKey("orders.id"), primary_key=True)
+    created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+
+@app.route('/')
+def init():
+    return redirect(url_for('products_list'))
 
 @app.route('/products/list')
 def products_list():
-    try:
-        products = query_db("SELECT * FROM products")
-        return render_template('products/list.html', results=products)
-    except Exception as e:
-        flash(f'Error al cargar el listado de productos: {str(e)}')
-        return redirect(url_for('hello_world'))
+    products_with_categories = db.session.query(products, categories).join(categories).order_by(products.id.asc()).all()
+    return render_template('products/list.html', products_with_categories=products_with_categories)
 
-@app.route('/products/read/<int:id>')
-def products_read(id):
-    product = obtenir_producte_id(id)
-    if not product:
-        flash('No se encontró ningún producto con el ID proporcionado.')
-        return redirect(url_for('products_list'))
-    categories = obtenir_categories()
-    if not categories:
-        flash('Error al cargar las categorias.')
-        return redirect(url_for('products_list'))
-    return render_template('products/read.html', results=product, categories=categories)
-
-@app.route('/products/create', methods=["GET", "POST"])
+@app.route('/products/create', methods = ['POST', 'GET'])
 def products_create():
     if request.method == 'GET':
-        categories = obtenir_categories()
-        if not categories:
-            flash('Error al cargar las categorias.')
-            return redirect(url_for('products_list'))
-        return render_template('products/create.html', results=categories)
+        cat = db.session.query(categories).order_by(categories.id.asc()).all()
+        return render_template('products/create.html', categories=cat)
     elif request.method == 'POST':
-        data = request.form
-        if all(data.values()) and len(data['title']) <= 255:
-            photo = request.files['photo']
-            if len(photo.read()) <= 2 * 1024 * 1024:
-                filename = secure_filename(photo.filename)
-                file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-                photo.save(file_path)
-                app.logger.info("--------")
-                app.logger.info(filename)
-                app.logger.info("--------")
-                mydb = get_db()
-                mycursor = mydb.cursor()
-                dia_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                sql = "INSERT INTO products (title, description, photo, price, category_id, seller_id, created, updated) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
-                mycursor.execute(sql, (data['title'], data['description'], filename, data['price'], data['category_id'], 10, dia_actual, dia_actual))
-                mydb.commit()
-                flash('Producto creado con éxito')
-                return redirect(url_for('products_list'))
-            else:
-                flash('Error al crear el producto. La imagen debe ser menor de 2 MB.')
-                return redirect(url_for('products_list'))
-        else:
-            flash('Error al crear el producto. Faltan datos obligatorios o el título excede los 255 caracteres.')
+        title = request.form['title']
+        description = request.form['description']
+        photo = request.files['photo']
+        price = request.form['price']
+        category_id = request.form['category_id']
+        seller_id = 10
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            new_product = products()
+            new_product.title=title
+            new_product.description=description
+            new_product.photo=filename
+            new_product.price=price
+            new_product.category_id=category_id
+            new_product.seller_id= seller_id
+            new_product.created=datetime.now()
+            new_product.updated=datetime.now()
+
+
+            db.session.add(new_product)
+            db.session.commit()
+
             return redirect(url_for('products_list'))
 
-@app.route('/products/update/<int:id>', methods=["GET", "POST"])
-def products_update(id):
-    product = obtenir_producte_id(id)
-    if not product:
-        flash('El producto que intentas actualizar no existe.')
-        return redirect(url_for('products_list'))
+@app.route('/products/read/<int:products_id>')
+def products_read(products_id):
+    (product, category) = db.session.query(products, categories).join(categories).filter(products.id == products_id).one()
+    return render_template('products/read.html', product = product, category = category)
+
+@app.route('/products/update/<int:products_id>',methods = ['POST', 'GET'])
+def products_update(products_id):
+    # select amb 1 resultat
+    pro = db.session.query(products).filter(products.id == products_id).one()
     
     if request.method == 'GET':
-        categories = obtenir_categories()
-        if not categories:
-            flash('Error al cargar las categorias.')
-            return redirect(url_for('products_list'))
-        return render_template('products/update.html', results=product, categories=categories)
-    elif request.method == 'POST':
-        data = request.form
-        if all(data.values()):
-            dia_actual = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            sql = "UPDATE products SET title = ?, description = ?, photo = ?, price = ?, category_id = ?, updated = ? WHERE id = ?"
-            get_db().execute(sql, (data['title'], data['description'], data['photo'], data['price'], data['category_id'], dia_actual, id))
-            get_db().commit()
-            flash('Producto actualizado con éxito')
-            return redirect(url_for('products_list'))
-        else:
-            flash('Error al actualizar el producto. Faltan datos obligatorios.')
-            return redirect(url_for('products_list'))        
+        # select que retorna una llista de resultats
+        cat = db.session.query(categories).order_by(categories.id.asc()).all()
+        return render_template('products/update.html', product = pro, categories = cat)
+    else: # POST
+        title = request.form['title']
+        description = request.form['description']
+        photo = request.files['photo']
+        price = request.form['price']
+        category_id = request.form['category_id']
+        seller_id = 10
+        if photo and allowed_file(photo.filename):
+            filename = secure_filename(photo.filename)
+            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-@app.route('/products/delete/<int:id>', methods=["GET", "POST"])
-def products_delete(id):
-    product = obtenir_producte_id(id)
-    if not product:
-        flash('El producto que intentas eliminar no existe.')
-        return redirect(url_for('products_list'))
+            # actualitzo els valors de l'item
+            pro.title=title
+            pro.description=description
+            pro.photo=filename
+            pro.price=price
+            pro.category_id=category_id
+            pro.seller_id= seller_id
+            pro.updated=datetime.now()
+
+            # update!
+            db.session.add(pro)
+            db.session.commit()
+
+            return redirect(url_for('products_read', products_id = products_id))
+        
+@app.route('/products/delete/<int:products_id>',methods = ['GET', 'POST'])
+def products_delete(products_id):
+    # select amb 1 resultat
+    (product, category) = db.session.query(products, categories).join(categories).filter(products.id == products_id).one()
 
     if request.method == 'GET':
-        categories = obtenir_categories()
-        if not categories:
-            flash('Error al cargar las categorias.')
-            return redirect(url_for('products_list'))
-        return render_template('products/delete.html', results=product, categories=categories)
-    elif request.method == 'POST':
-        get_db().execute("DELETE FROM products WHERE id = ?", (id,))
-        get_db().commit()
-        flash('Producto eliminado con éxito')
+        return render_template('products/delete.html', product = product, category = category)
+    else: # POST
+        # delete!
+        db.session.delete(product)
+        db.session.commit()
+
         return redirect(url_for('products_list'))

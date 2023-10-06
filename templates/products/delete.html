@@ -12,27 +12,21 @@
         <h1>Eliminar Productos</h1>
     </header>
     <main>
-        {% for row in results %}
         <section class="product">
             <div class="product-info">
-                <h2>{{ row.title }}</h2>
-                <p>{{ row.description }}</p>
-                <p>Precio: ${{ row.price }}</p>
-                {% for cat in categories %}
-                {% if cat['id'] == row.category_id %}
-                    <p>Categoría: {{ cat['name'] }}</p>
-                {% endif %}
-                {% endfor %}
+                <h2>{{ product.title }}</h2>
+                <p>{{ product.description }}</p>
+                <p>Precio: ${{ product.price }}</p>
+                <p >{{ category.name }}</p>
             </div>
             <div class="product-actions">
-                <form id="delete" method="POST" action="/products/delete/{{ row.id }}">
+                <form id="delete" method="POST" action="/products/delete/{{ product.id }}">
                     <input form="delete" type="submit" value="Eliminar"/>
                 </form>
-                <a class="link" href="{{ url_for('products_update', id=row.id) }}">Editar</a>
+                <a class="link" href="/products/update/{{ product.id }}">Editar</a>
                 <a class="link" href="{{url_for('products_list')}}">Volver</a>
             </div>
         </section>
-        {% endfor %}
     </main>
 </body>
 </html>
