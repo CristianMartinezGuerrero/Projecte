@@ -1,83 +1,37 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read - Products</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/read.css')}}">
-</head>
-<body>
-    {% for row in results %}
-    <div>
-        <form id="read">
-            <div>           
-                <div class="formulario">
-                    <label for="title">Title</label>
-                    <input type="text" value="{{ row.title }}" id="title" name="title" readonly/>
-                    <label for="description">Description</label>
-                    <input type="text" value="{{ row.description }}" id="description" name="description" readonly/>
-                    <label for="photo">Photo</label>
-                    <input type="file" value="{{ row.photo }}" id="photo" name="photo" readonly/>
-                    <label for="price">Price</label>
-                    <input type="number" value="{{ row.price }}" id="price" name="price" readonly/>
-                    <label for="category_id">Category_id</label>
-                    <select name="category_id" id="category_id">
-                    {% for cat in categories %}
-                    {% if cat['id'] == row.category_id %}
-                        <option value="{{ cat['id'] }}">{{ cat['name'] }}</option>
-                    {% endif %}
-                    {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </form>
-        
-    </div>
-    <div>
-        <div class="opciones">
-            <a href="/products/update/{{ row.id }}">Editar</a>
-            <input form="read" type="reset" value="Eliminar"/>
-            <a href="/products/list">Tornar</a>
-        </div>
-    </div>
-    {% endfor %}
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Read - Products</title>
+    <title>Detalles - Productos</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/read.css')}}">
 </head>
 <body>
     <header>
-        <h1>Product Details</h1>
+        <h1>Detalles del Producto</h1>
     </header>
     <main>
         {% for row in results %}
         <section class="product-details">
             <form id="read" class="product-form">
                 <div class="form-group">
-                    <label for="title">Title:</label>
+                    <label for="title">Título:</label>
                     <input type="text" value="{{ row.title }}" id="title" name="title" readonly/>
                 </div>
                 <div class="form-group">
-                    <label for="description">Description:</label>
+                    <label for="description">Descripción:</label>
                     <input type="text" value="{{ row.description }}" id="description" name="description" readonly/>
                 </div>
                 <div class="form-group">
-                    <label for="photo">Photo:</label>
-                    <img src="{{ row.photo }}" id="photo" alt="Product Photo"/>
+                    <label for="photo">Foto:</label>
+                    <img src="{{ row.photo }}" id="photo"/>
                 </div>
                 <div class="form-group">
-                    <label for="price">Price:</label>
+                    <label for="price">Precio:</label>
                     <input type="number" value="{{ row.price }}" id="price" name="price" readonly/>
                 </div>
                 <div class="form-group">
-                    <label for="category">Category:</label>
+                    <label for="category">Categoría:</label>
                     <select name="category" id="category" disabled>
                         {% for cat in categories %}
                         {% if cat['id'] == row.category_id %}
@@ -88,9 +42,9 @@
                 </div>
             </form>
             <div class="options">
-                <a class="link" href="/products/update/{{ row.id }}">Edit</a>
-                <input form="read" type="submit" value="Delete" class="button-delete"/>
-                <a class="link" href="/products/list">Back</a>
+                <a class="link" href="{{ url_for('products_update', id=row.id) }}">Editar</a>
+                <a class="button-delete" href="{{ url_for('products_delete', id=row.id) }}">Eliminar</a>
+                <a class="link" href="{{url_for('products_list')}}">Volver</a>
             </div>
         </section>
         {% endfor %}

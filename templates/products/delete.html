@@ -1,59 +1,15 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete - Products</title>
-</head>
-<body>
-    {% for row in results %}
-    <div>
-        <form id="delete" method="POST" action="/products/delete/{{ row.id }}">
-            <div>           
-                <div class="formulario">
-                    <label for="title">Title</label>
-                    <input type="text" value="{{ row.title }}" id="title" name="title" readonly/>
-                    <label for="description">Description</label>
-                    <input type="text" value="{{ row.description }}" id="description" name="description" readonly/>
-                    <label for="photo">Photo</label>
-                    <input type="file" value="{{ row.photo }}" id="photo" name="photo" readonly/>
-                    <label for="price">Price</label>
-                    <input type="number" value="{{ row.price }}" id="price" name="price" readonly/>
-                    <label for="category_id">Category_id</label>
-                    <select name="category_id" id="category_id">
-                    {% for cat in categories %}
-                    {% if cat['id'] == row.category_id %}
-                        <option value="{{ cat['id'] }}">{{ cat['name'] }}</option>
-                    {% endif %}
-                    {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </form>
-        
-    </div>
-    <div>
-        <div class="opciones">
-            <a href="/products/update/{{ row.id }}">Editar</a>
-            <input form="delete" type="submit" value="Eliminar"/>
-            <a href="/products/list">Tornar</a>
-        </div>
-    </div>
-    {% endfor %}
-</body>
-</html> -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delete - Products</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/delete.css')}}">
+    <title>Eliminar - Productos</title>
+    <!-- <link rel="stylesheet" href="{{url_for('static', filename='css/delete.css')}}"> -->
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
 <body>
     <header>
-        <h1>Delete Product</h1>
+        <h1>Eliminar Productos</h1>
     </header>
     <main>
         {% for row in results %}
@@ -61,15 +17,19 @@
             <div class="product-info">
                 <h2>{{ row.title }}</h2>
                 <p>{{ row.description }}</p>
-                <p>Price: ${{ row.price }}</p>
-                <p>Category: {{ row.category_name }}</p>
+                <p>Precio: ${{ row.price }}</p>
+                {% for cat in categories %}
+                {% if cat['id'] == row.category_id %}
+                    <p>Categoría: {{ cat['name'] }}</p>
+                {% endif %}
+                {% endfor %}
             </div>
             <div class="product-actions">
                 <form id="delete" method="POST" action="/products/delete/{{ row.id }}">
-                    <input form="delete" type="submit" value="Delete"/>
+                    <input form="delete" type="submit" value="Eliminar"/>
                 </form>
-                <a class="link" href="/products/update/{{ row.id }}">Edit</a>
-                <a class="link" href="/products/list">Back</a>
+                <a class="link" href="{{ url_for('products_update', id=row.id) }}">Editar</a>
+                <a class="link" href="{{url_for('products_list')}}">Volver</a>
             </div>
         </section>
         {% endfor %}

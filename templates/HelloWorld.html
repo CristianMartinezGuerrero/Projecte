@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,16 +6,6 @@
     <title>HelloWorld</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
 </head>
-<body>
-    <h1><a class="link" href="https://www.youtube.com/watch?v=RS4t_U3jfmg">Welinton</a> Quiw es el campeon aqui con mi primo luka tu sabeh comiendono un manguito clasico.</h1>
-    <img src="{{url_for('static', filename='img/welinton.jpg')}}">
-    <h1><a class="link" href="/products/list">Ver productos</a></h1>
-    <h1><a class="link" href="/products/create">Crear producto</a></h1>
-    <h1><a class="link" href="/products/list">Actualizar producto</a></h1>
-    <h1><a class="link" href="/products/list">Eliminar producto</a></h1>
-    
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,24 +16,29 @@
 </head>
 <body>
     <header>
-        <h1><a class="link" href="https://www.youtube.com/watch?v=RS4t_U3jfmg">Welinton</a></h1>
+        <h1>Welinton</h1>
     </header>
     <main>
-        <section class="intro">
-            <p>Quiw es el campeon aquí con mi primo luka tu sabes comiéndonos un manguito clásico.</p>
-            <a class="link" href="/products/list">Ver productos</a>
-        </section>
-        <section class="image">
-            <img src="{{url_for('static', filename='img/welinton.jpg')}}">
-        </section>
+        <div class="container">
+            <img src="{{url_for('static', filename='img/welinton.jpg')}}" alt="Welinton Image">
+        </div>
     </main>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="error-messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
     <footer>
-        <h2>Acciones:</h2>
         <nav>
             <ul>
-                <li><a class="link" href="/products/create">Crear producto</a></li>
-                <li><a class="link" href="/products/list">Actualizar producto</a></li>
-                <li><a class="link" href="/products/list">Eliminar producto</a></li>
+                <li><a class="link" href="{{url_for('products_list')}}">Ver productos</a></li>
+                <li><a class="link" href="{{url_for('products_create')}}">Crear producto</a></li>                
+                <li><a class="link" href="{{url_for('products_list')}}">Actualizar producto</a></li>
+                <li><a class="link" href="{{url_for('products_list')}}">Eliminar producto</a></li>
             </ul>
         </nav>
     </footer>

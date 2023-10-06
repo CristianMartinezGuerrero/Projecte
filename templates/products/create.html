@@ -1,88 +1,47 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create - Products</title>
-    <link rel="stylesheet" href="{{url_for('static', filename='css/create.css')}}">
-</head>
-<body>
-    <div>
-        <form id="create" method="POST" action="/products/create">
-            <div>
-                <div class="formulario">
-                    <label for="title">Title</label>
-                    <input type="text" id="title" name="title" required/>
-                    <label for="description">Description</label>
-                    <input type="text" id="description" name="description" required/>
-                    <label for="photo">Photo</label>
-                    <input type="file" id="photo" name="photo" required/>
-                    <label for="price">Price</label>
-                    <input type="number" id="price" name="price" required/>
-                    <label for="category_id">Category_id</label>
-                    <select name="category_id" id="category_id">
-                        <option value="">--Please choose an option--</option>
-                        {% for result in results %}
-                        <option value="{{ result['id'] }}">{{ result['name'] }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div>
-        <div class="opciones">
-            <input form="create" type="submit" value="Crear"/>
-            <input form="create" type="reset" value="Esborrar"/>
-            <a href="/">Tornar</a>
-        </div>
-    </div>
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create - Products</title>
+    <title>Crear - Productos</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/create.css')}}">
 </head>
 <body>
     <header>
-        <h1>Create New Product</h1>
+        <h1>Crear Nuevo Producto</h1>
     </header>
     <main>
         <section class="product-form">
-            <form id="create" method="POST" action="/products/create">
+            <form id="create" method="POST" action="/products/create" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="title">Title:</label>
+                    <label for="title">Título:</label>
                     <input type="text" id="title" name="title" required/>
                 </div>
                 <div class="form-group">
-                    <label for="description">Description:</label>
-                    <input type="text" id="description" name="description" required/>
+                    <label for="description">Descripción:</label>
+                    <input type="text" id="description" name="description"/>
                 </div>
                 <div class="form-group">
-                    <label for="photo">Photo:</label>
+                    <label for="photo">Foto:</label>
                     <input type="file" id="photo" name="photo" required/>
                 </div>
                 <div class="form-group">
-                    <label for="price">Price:</label>
+                    <label for="price">Precio:</label>
                     <input type="number" id="price" name="price" required/>
                 </div>
                 <div class="form-group">
-                    <label for="category">Category:</label>
-                    <select name="category" id="category">
-                        <option value="">--Please choose an option--</option>
+                    <label for="category_id">Categoría:</label>
+                    <select name="category_id" id="category_id">
+                        <option value="">--Por favor, elige una opción--</option>
                         {% for result in results %}
                         <option value="{{ result['id'] }}">{{ result['name'] }}</option>
                         {% endfor %}
                     </select>
                 </div>
                 <div class="options">
-                    <input form="create" type="submit" value="Create" class="button-create"/>
-                    <input form="create" type="reset" value="Clear" class="button-clear"/>
-                    <a class="link" href="/">Back</a>
+                    <input form="create" type="submit" value="Crear" class="button-create"/>
+                    <input form="create" type="reset" value="Limpiar" class="button-clear"/>
+                    <a class="link" href="{{url_for('products_list')}}">Volver</a>
                 </div>
             </form>
         </section>

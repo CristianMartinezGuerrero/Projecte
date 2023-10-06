@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>List - Products</title>
+    <title>Lista - Productos</title>
     <link rel="stylesheet" href="{{url_for('static', filename='css/list.css')}}">
 </head>
 <body>
@@ -11,15 +11,15 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Photo</th>
-                <th>Price</th>
-                <th>Category_id</th>
-                <th>Seller_id</th>
-                <th>Created</th>
-                <th>Updated</th>
-                <th colspan="3">Accions</th>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Foto</th>
+                <th>Precio</th>
+                <th>ID de Categoría</th>
+                <th>ID de Vendedor</th>
+                <th>Creado</th>
+                <th>Actualizado</th>
+                <th colspan="3">Acciones</th>
             </tr>
         </thead>
         <tbody>
@@ -34,14 +34,23 @@
                 <td>{{ result['seller_id'] }}</td>
                 <td>{{ result['created'] }}</td>
                 <td>{{ result['updated'] }}</td>
-                <td><a href="/products/read/{{ result['id'] }}" title="Veure">Veure</a></td>
-                <td><a href="/products/update/{{ result['id'] }}" title="Editar">Editar</a></td>
-                <td><a href="/products/delete/{{ result['id'] }}" title="Eliminar">Eliminar</a></td>
+                <td><a href="{{ url_for('products_read', id=result['id']) }}" title="Ver">Ver</a></td>
+                <td><a href="{{ url_for('products_update', id=result['id']) }}" title="Editar">Editar</a></td>
+                <td><a href="{{ url_for('products_delete', id=result['id']) }}" title="Eliminar">Eliminar</a></td>      
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    <a class="link" href="/">Home</a>
-    <a class="link" href="/products/create">Crear producto</a>
+    <a class="link" href="/">Inicio</a>
+    <a class="link" href="{{url_for('products_create')}}">Crear Producto</a>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 </body>
 </html>
