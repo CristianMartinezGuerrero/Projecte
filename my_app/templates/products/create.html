@@ -14,29 +14,19 @@
         <section class="product-form">
             <form id="create" method="POST" action="/products/create" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="title">Título:</label>
-                    <input type="text" id="title" name="title" required/>
+                    <p>{{ form.title.label }}: {{ form.title() }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="description">Descripción:</label>
-                    <input type="text" id="description" name="description"/>
+                    <p>{{ form.description.label }}: {{ form.description() }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="photo">Foto:</label>
-                    <input type="file" id="photo" name="photo" required/>
+                    <p>{{ form.photo.label }}: {{ form.photo() }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="price">Precio:</label>
-                    <input type="number" id="price" name="price" required/>
+                    <p>{{ form.price.label }}: {{ form.price() }}</p>
                 </div>
                 <div class="form-group">
-                    <label for="category_id">Categoría:</label>
-                    <select name="category_id" id="category_id">
-                        <option value="">--Por favor, elige una opción--</option>
-                        {% for cat in categories %}
-                        <option value="{{ cat.id }}">{{ cat.name }}</option>
-                        {% endfor %}
-                    </select>
+                    <p>{{ form.category_id.label }}: {{ form.category_id() }}</p>
                 </div>
                 <div class="options">
                     <input form="create" type="submit" value="Crear" class="button-create"/>

@@ -4,6 +4,7 @@ from . import db_manager as db
 import os
 from werkzeug.utils import secure_filename
 from datetime import datetime
+from .forms import ItemForm, DeleteForm
 
 # Blueprint
 main_bp = Blueprint(
@@ -34,40 +35,26 @@ def products_list():
 
 @main_bp.route('/products/create', methods = ['POST', 'GET'])
 def products_create():
-    if request.method == 'GET':
-        cat = db.session.query(categories).order_by(categories.id.asc()).all()
-        return render_template('products/create.html', categories=cat)
+    cat = db.session.query(categories).order_by(categories.id.asc()).all()
 
-    elif request.method == 'POST':
-        try:
-            title = request.form['title']
-            description = request.form['description']
-            photo = request.files['photo']
-            price = request.form['price']
-            category_id = request.form['category_id']
-            seller_id = 10
-            if photo and allowed_file(photo.filename):
-                filename = secure_filename(photo.filename)
-                file_path = os.path.join(upload_folder, filename)
-                photo.save(file_path)
+    form = ItemForm()
+    form.category_id.choices = [(categories.id, categories.name) for categories in cat]
 
-                new_product = products()
-                new_product.title=title
-                new_product.description=description
-                new_product.photo=filename
-                new_product.price=price
-                new_product.category_id=category_id
-                new_product.seller_id= seller_id
-                new_product.created=datetime.now()
-                new_product.updated=datetime.now()
+    if form.validate_on_submit(): # si s'ha fet submit al formulari
+        # he de crear un nou item
+        new_item = products()
+        # dades del formulari a l'objecte item
+        form.populate_obj(new_item)
 
-                db.session.add(new_product)
-                db.session.commit()
-                flash('Producto creado con éxito')
-                return redirect(url_for('main_bp.products_list'))
-        except Exception:
-            flash('Error al crear el producto.')
-            return redirect(url_for('main_bp.products_list'))
+        # insert!
+        db.session.add(new_item)
+        db.session.commit()
+
+        # https://en.wikipedia.org/wiki/Post/Redirect/Get
+        return redirect(url_for('main_bp.products_list'))
+    else: #GET
+        return render_template('products/create.html', form = form)
+
 
 @main_bp.route('/products/read/<int:products_id>')
 def products_read(products_id):
@@ -83,56 +70,33 @@ def products_read(products_id):
 @main_bp.route('/products/update/<int:products_id>',methods = ['POST', 'GET'])
 def products_update(products_id):
     pro = db.session.query(products).filter(products.id == products_id).one()
-    
-    if request.method == 'GET':
-        cat = db.session.query(categories).order_by(categories.id.asc()).all()
-        return render_template('products/update.html', product = pro, categories = cat)
-    else:
-        try:
-            title = request.form['title']
-            description = request.form['description']
-            photo = request.files['photo']
-            price = request.form['price']
-            category_id = request.form['category_id']
-            seller_id = 10
-            if allowed_file(photo.filename):
-                filename = secure_filename(photo.filename)
-                file_path = os.path.join(upload_folder, filename)
-                photo.save(file_path)
-            if photo:
-                pro.title=title
-                pro.description=description
-                pro.photo=filename
-                pro.price=price
-                pro.category_id=category_id
-                pro.seller_id= seller_id
-                pro.updated=datetime.now()
+    cat = db.session.query(categories).order_by(categories.id.asc()).all()
 
-                db.session.add(pro)
-                db.session.commit()
-                flash('Producto actualizado con éxito')
-                return redirect(url_for('main_bp.products_read', products_id = products_id))
-        except Exception:
-            flash('Error al actualizar el producto. Faltan datos obligatorios.')
-            return redirect(url_for('main_bp.products_list'))
-        
+    form = ItemForm(obj = pro)
+    form.category_id.choices = [(categories.id, categories.name) for categories in cat]
+
+    if form.validate_on_submit(): # si s'ha fet submit al formulari
+        # dades del formulari a l'objecte item
+        form.populate_obj(pro)
+
+        # update!
+        db.session.add(pro)
+        db.session.commit()
+
+        return redirect(url_for('main_bp.products_read', products_id = products_id))
+    else: #GET
+        return render_template('products/update.html', product = pro, categories = cat, form = form)
+
 @main_bp.route('/products/delete/<int:products_id>',methods = ['GET', 'POST'])
 def products_delete(products_id):
     (product, category) = db.session.query(products, categories).join(categories).filter(products.id == products_id).one()
-    if not product:
-        flash('No se encontró ningún producto con el ID proporcionado.')
+    
+    form = DeleteForm()
+    if form.validate_on_submit(): # si s'ha fet submit al formulari
+        # delete!
+        db.session.delete(product)
+        db.session.commit()
+
         return redirect(url_for('main_bp.products_list'))
-    if not category:
-        flash('Error al cargar las categorias.')
-        return redirect(url_for('main_bp.products_list'))
-    if request.method == 'GET':
-        return render_template('products/delete.html', product = product, category = category)
-    else:
-        try:
-            db.session.delete(product)
-            db.session.commit()
-            flash('Producto eliminado con éxito')
-            return redirect(url_for('main_bp.products_list'))
-        except Exception:
-            flash(f'Error al eliminar el producto.')
-            return redirect(url_for('main_bp.products_list'))
+    else: # GET
+        return render_template('products/delete.html', product = product, category = category, form = form)

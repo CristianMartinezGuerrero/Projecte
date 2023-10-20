@@ -21,7 +21,8 @@
             </div>
             <div class="product-actions">
                 <form id="delete" method="POST" action="/products/delete/{{ product.id }}">
-                    <input form="delete" type="submit" value="Eliminar"/>
+                    {{ form.csrf_token }}
+                    <p>{{ form.submit(value="ESBORRAR") }}</p>
                 </form>
                 <a class="link" href="/products/update/{{ product.id }}">Editar</a>
                 <a class="link" href="{{url_for('main_bp.products_list')}}">Volver</a>
