@@ -36,8 +36,8 @@
                 <td><a>{{ products.price }}</a></td>
                 <td><a>{{ products.category_id }}</a></td>
                 <td><a>{{ products.seller_id }}</a></td>
-                <td><a>{{ products.created }}</a></td>
-                <td><a>{{ products.updated }}</a></td>
+                <td><a>{{ products.created.strftime("%Y-%m-%d %H:%M:%S") }}</a></td>
+                <td><a>{{ products.updated.strftime("%Y-%m-%d %H:%M:%S") }}</a></td>
                 <td><a href="/products/read/{{ products.id }}">Ver</a></td>
                 <td><a href="/products/update/{{ products.id }}">Editar</a></td>
                 <td><a href="/products/delete/{{ products.id }}">Eliminar</a></td>
