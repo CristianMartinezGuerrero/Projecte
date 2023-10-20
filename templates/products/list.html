@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/list.css')}}">
 </head>
 <body>
+    <div class="button-container">
+        <a class="link" href="/hello">Inicio</a>
+        <a class="link" href="/products/create">Crear producto</a>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -41,7 +45,14 @@
             {% endfor %}
         </tbody>
     </table>
-    <a class="link" href="/">Inicio</a>
-    <a class="link" href="/products/create">Crear producto</a>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
 </body>
 </html>

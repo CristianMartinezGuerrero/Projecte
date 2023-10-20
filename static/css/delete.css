@@ -1,11 +1,9 @@
-/* Resetear estilos por defecto del navegador */
 body, h1, h2, p, a, form, input, select {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Estilos para el cuerpo (body) */
 body {
     font-family: Arial, sans-serif;
     background-color: #f0f0f0;
@@ -13,7 +11,6 @@ body {
     padding: 20px;
 }
 
-/* Estilos para el encabezado (h1) */
 header {
     background-color: #007BFF;
     color: #fff;
@@ -23,35 +20,29 @@ header {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-/* Estilos para los encabezados secundarios (h2) */
 .product h2 {
     font-size: 24px;
     margin-bottom: 10px;
 }
 
-/* Estilos para los párrafos (p) */
 .product p {
     margin-bottom: 10px;
 }
 
-/* Estilos para los enlaces (a) */
 a {
     color: #007BFF;
     text-decoration: none;
     transition: color 0.3s;
 }
 
-/* Cambiar color de enlace al pasar el cursor sobre él */
 a:hover {
     color: #0056b3;
 }
 
-/* Estilos para los formularios */
 form {
     display: inline;
 }
 
-/* Estilos para los botones de eliminar (submit) */
 input[type="submit"] {
     background-color: #FF5733;
     color: #fff;
@@ -61,14 +52,14 @@ input[type="submit"] {
     cursor: pointer;
     transition: background-color 0.3s;
     margin-right: 10px;
+    text-decoration: none;
 }
 
-/* Cambiar color de fondo del botón de eliminar al pasar el cursor sobre él */
 input[type="submit"]:hover {
     background-color: #FF3300;
+    text-decoration: none;
 }
 
-/* Estilos para las secciones de productos (product) */
 .product {
     background-color: #fff;
     border: 1px solid #ddd;
@@ -82,19 +73,16 @@ input[type="submit"]:hover {
     align-items: center;
 }
 
-/* Estilos para la información del producto (product-info) */
 .product-info {
     flex-grow: 1;
     text-align: left;
 }
 
-/* Estilos para las acciones del producto (product-actions) */
 .product-actions {
     flex-shrink: 0;
     text-align: right;
 }
 
-/* Estilos para los enlaces con la clase "link" */
 .link {
     color: #fff;
     text-decoration: none;
@@ -105,7 +93,6 @@ input[type="submit"]:hover {
     margin-right: 10px;
 }
 
-/* Cambiar color de fondo del enlace al pasar el cursor sobre él */
 .link:hover {
     background-color: #007BFF;
 }

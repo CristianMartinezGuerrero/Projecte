@@ -1,83 +1,82 @@
+body, h1, a, form, input, select {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+
 body {
     font-family: Arial, sans-serif;
-    background-color: purple;
+    background-color: #f4f4f4;
     text-align: center;
     padding: 20px;
 }
 
 h1 {
-    color: white;
-    background-color: black;
+    background-color: #007BFF;
+    color: #fff;
     padding: 10px;
     border-radius: 5px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    border: 1px solid #0056b3;
+    margin-bottom: 20px;
 }
 
-.product-form {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 20px black;
+a {
+    color: #007BFF;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #0056b3;
 }
 
 .form-group {
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 
-label {
+.form-group label {
     display: block;
-    font-weight: bold;
-    font-size: 1.3em;
-    padding: 10px;
+    margin-bottom: 5px;
+    color: #333;
 }
 
-input[type="text"], input[type="number"], select {
-    width: 50%;
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+    width: 100%;
     padding: 10px;
-    border: 1px solid black;
+    border: 1px solid #ccc;
     border-radius: 5px;
+    font-size: 16px;
 }
 
-input[type="file"] {
-    width: 50%;
-    padding: 10px;
-    border: 1px solid black;
-    border-radius: 5px;
+.form-group select {
+    appearance: none;
+    background-image: url('arrow-down.png');
+    background-repeat: no-repeat;
+    background-position: right center;
+    padding-right: 30px;
 }
 
 .options {
-    text-align: center;
-    margin-top: 20px;
+    display: flex;
+    justify-content: center;
 }
 
-.button-create, .button-clear {
-    font-size: 17px;
+.options a,
+.options input[type="submit"] {
+    margin: 0 10px;
     padding: 10px 20px;
-    background-color: black;
-    color: purple;
+    background-color: #007BFF;
+    color: #fff;
     border: none;
     border-radius: 5px;
-    margin-right: 10px;
-    cursor: pointer;
-}
-
-.button-create:hover, .button-clear:hover {
-    background-color: purple;
-    color: black;
-}
-
-.link {
-    font-size: 17.5px;
-    padding: 10px 20px;
     text-decoration: none;
-    background-color: black;
-    color: purple;
-    border: none;
-    border-radius: 5px;
-    margin-right: 10px;
-    cursor: pointer;
 }
 
-.link:hover {
-    background-color: purple;
-    color: black;
+.options a:hover,
+.options input[type="submit"]:hover {
+    background-color: #0056b3;
 }

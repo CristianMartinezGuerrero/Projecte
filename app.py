@@ -1,4 +1,4 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, redirect, url_for, request, flash
 from flask_sqlalchemy import SQLAlchemy
 import os
 from datetime import datetime
@@ -16,12 +16,9 @@ app.secret_key = "xxx"
 def allowed_file(photoname):
     return '.' in photoname and photoname.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# ruta absoluta d'aquesta carpeta
 basedir = os.path.abspath(os.path.dirname(__file__)) 
 
-# paràmetre que farà servir SQLAlchemy per a connectar-se
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///" + basedir + "/database.db"
-# mostre als logs les ordres SQL que s'executen
 app.config["SQLALCHEMY_ECHO"] = True
 
 # Inicio SQLAlchemy
@@ -80,10 +77,18 @@ class confirmed_orders(db.Model):
 def init():
     return redirect(url_for('products_list'))
 
+@app.route("/hello")
+def hello_world():
+    return render_template('HelloWorld.html')
+
 @app.route('/products/list')
 def products_list():
-    products_with_categories = db.session.query(products, categories).join(categories).order_by(products.id.asc()).all()
-    return render_template('products/list.html', products_with_categories=products_with_categories)
+    try:
+        products_with_categories = db.session.query(products, categories).join(categories).order_by(products.id.asc()).all()
+        return render_template('products/list.html', products_with_categories=products_with_categories)
+    except Exception:
+        flash(f'Error al cargar la lista de productos.')
+        return redirect(url_for('init'))
 
 @app.route('/products/create', methods = ['POST', 'GET'])
 def products_create():
@@ -91,82 +96,99 @@ def products_create():
         cat = db.session.query(categories).order_by(categories.id.asc()).all()
         return render_template('products/create.html', categories=cat)
     elif request.method == 'POST':
-        title = request.form['title']
-        description = request.form['description']
-        photo = request.files['photo']
-        price = request.form['price']
-        category_id = request.form['category_id']
-        seller_id = 10
-        if photo and allowed_file(photo.filename):
-            filename = secure_filename(photo.filename)
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        try:
+            title = request.form['title']
+            description = request.form['description']
+            photo = request.files['photo']
+            price = request.form['price']
+            category_id = request.form['category_id']
+            seller_id = 10
+            if photo and allowed_file(photo.filename):
+                filename = secure_filename(photo.filename)
+                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            new_product = products()
-            new_product.title=title
-            new_product.description=description
-            new_product.photo=filename
-            new_product.price=price
-            new_product.category_id=category_id
-            new_product.seller_id= seller_id
-            new_product.created=datetime.now()
-            new_product.updated=datetime.now()
+                new_product = products()
+                new_product.title=title
+                new_product.description=description
+                new_product.photo=filename
+                new_product.price=price
+                new_product.category_id=category_id
+                new_product.seller_id= seller_id
+                new_product.created=datetime.now()
+                new_product.updated=datetime.now()
 
 
-            db.session.add(new_product)
-            db.session.commit()
-
+                db.session.add(new_product)
+                db.session.commit()
+                flash('Producto creado con éxito')
+                return redirect(url_for('products_list'))
+        except Exception:
+            flash('Error al crear el producto.')
             return redirect(url_for('products_list'))
 
 @app.route('/products/read/<int:products_id>')
 def products_read(products_id):
     (product, category) = db.session.query(products, categories).join(categories).filter(products.id == products_id).one()
+    if not product:
+        flash('No se encontró ningún producto con el ID proporcionado.')
+        return redirect(url_for('products_list'))
+    if not category:
+        flash('Error al cargar las categorias.')
+        return redirect(url_for('products_list'))
     return render_template('products/read.html', product = product, category = category)
 
 @app.route('/products/update/<int:products_id>',methods = ['POST', 'GET'])
 def products_update(products_id):
-    # select amb 1 resultat
     pro = db.session.query(products).filter(products.id == products_id).one()
     
     if request.method == 'GET':
-        # select que retorna una llista de resultats
         cat = db.session.query(categories).order_by(categories.id.asc()).all()
         return render_template('products/update.html', product = pro, categories = cat)
-    else: # POST
-        title = request.form['title']
-        description = request.form['description']
-        photo = request.files['photo']
-        price = request.form['price']
-        category_id = request.form['category_id']
-        seller_id = 10
-        if photo and allowed_file(photo.filename):
-            filename = secure_filename(photo.filename)
-            photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    else:
+        try:
+            title = request.form['title']
+            description = request.form['description']
+            photo = request.files['photo']
+            price = request.form['price']
+            category_id = request.form['category_id']
+            seller_id = 10
+            if photo and allowed_file(photo.filename):
+                filename = secure_filename(photo.filename)
+                photo.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
-            # actualitzo els valors de l'item
-            pro.title=title
-            pro.description=description
-            pro.photo=filename
-            pro.price=price
-            pro.category_id=category_id
-            pro.seller_id= seller_id
-            pro.updated=datetime.now()
+                pro.title=title
+                pro.description=description
+                pro.photo=filename
+                pro.price=price
+                pro.category_id=category_id
+                pro.seller_id= seller_id
+                pro.updated=datetime.now()
 
-            # update!
-            db.session.add(pro)
-            db.session.commit()
-
-            return redirect(url_for('products_read', products_id = products_id))
+                db.session.add(pro)
+                db.session.commit()
+                flash('Producto actualizado con éxito')
+                return redirect(url_for('products_read', products_id = products_id))
+        except Exception:
+            flash('Error al actualizar el producto. Faltan datos obligatorios.')
+            return redirect(url_for('products_list'))
         
 @app.route('/products/delete/<int:products_id>',methods = ['GET', 'POST'])
 def products_delete(products_id):
-    # select amb 1 resultat
     (product, category) = db.session.query(products, categories).join(categories).filter(products.id == products_id).one()
-
+    if not product:
+        flash('No se encontró ningún producto con el ID proporcionado.')
+        return redirect(url_for('products_list'))
+    if not category:
+        flash('Error al cargar las categorias.')
+        return redirect(url_for('products_list'))
     if request.method == 'GET':
         return render_template('products/delete.html', product = product, category = category)
-    else: # POST
-        # delete!
-        db.session.delete(product)
-        db.session.commit()
-
-        return redirect(url_for('products_list'))
+    else:
+        try:
+            db.session.delete(product)
+            db.session.commit()
+            flash('Producto eliminado con éxito')
+            return redirect(url_for('products_list'))
+        except Exception:
+            flash(f'Error al eliminar el producto.')
+            return redirect(url_for('products_list'))
